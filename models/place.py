@@ -60,5 +60,5 @@ class Place(BaseModel, Base):
     def amenities(self, value):
         from . import storage
         from models.amenity import Amenity
-        if f"Amenity.{value}" in self.all(Amenity):
+        if value in storage.all(Amenity):
             Place.amenity_ids.append(value)
