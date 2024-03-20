@@ -34,7 +34,6 @@ class Place(BaseModel, Base):
     place_amenities = relationship("Amenity",
                                    secondary=association_table,
                                    viewonly=False)
->>>>>>> master
 
     @property
     def reviews(self):
