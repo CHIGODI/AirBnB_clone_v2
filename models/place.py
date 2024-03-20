@@ -34,6 +34,7 @@ class Place(BaseModel, Base):
     place_amenities = relationship("Amenity",
                                    secondary=association_table,
                                    viewonly=False)
+>>>>>>> master
 
     @property
     def reviews(self):
@@ -50,18 +51,15 @@ class Place(BaseModel, Base):
     def amenities(self):
         from . import storage
         from models.amenity import Amenity
-        my_amenities = {}
+        my_amenities = []
         amenities_only = storage.all(Amenity)
-        for key, val in amenities_only.items():
-            for a_id in Place.amenity_ids:
-                if a_id == val.id:
-                    my_amenities.update({key: val})
+        for a_id in Place.amenity_ids:
+            my_amenities.append(amenities_only[f"Amenity.{a_id}"])
         return my_amenities
 
     @amenities.setter
     def amenities(self, value):
         from . import storage
         from models.amenity import Amenity
-        for key, val in storage.all(Amenity):
-            if value == val.id:
-                Place.amenity_ids.append(value)
+        if f"Amenity.{value}" in self.all(Amenity):
+            Place.amenity_ids.append(value)
