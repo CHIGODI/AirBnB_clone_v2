@@ -244,7 +244,6 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        from models.engine.db_storage import DBStorage
         print_list = []
 
         if args:
@@ -253,11 +252,9 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 return
             # Retrieve all objects of the specified class
-            if isinstance(storage, DBStorage):
+            if args in HBNBCommand.classes:
                 cls = HBNBCommand.classes[args]
                 objects = storage.all(cls)
-            else:
-                objects = storage.all()
 
             for obj in objects.values():
                 print_list.append(str(obj))
