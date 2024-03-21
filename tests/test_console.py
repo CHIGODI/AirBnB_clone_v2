@@ -60,9 +60,9 @@ class test_console(unittest.TestCase):
         state_2.save()
 
         output_dict = None
-        with patch('sys.stdout', new=StringIO()) as f:
+        with patch('sys.stdout', new=StringIO()) as o:
             HBNBCommand().onecmd('all State')
-            output_dict = f.getvalue().strip()
+            output_dict = o.getvalue().strip()
         self.assertIn('Carlifonia', output_dict)
         self.assertIn('New York', output_dict)
         state_1.delete()
