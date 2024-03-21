@@ -39,11 +39,11 @@ class Place(BaseModel, Base):
     def reviews(self):
         from . import storage
         from models.review import Review
-        my_reviews = {}
+        my_reviews = []
         reviews_only = storage.all(Review)
         for key, val in reviews_only.items():
             if val.place_id == self.id:
-                my_reviews.update({key: val})
+                my_reviews.append(val)
         return my_reviews
 
     @property
