@@ -13,3 +13,13 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
     cities = relationship("City", backref="state",
                           cascade="all, delete")
+
+    @property
+    def cities(self):
+        from . import storage
+        my_cities = []
+        cities_only = storage.all(City)
+        for key, val in cities_only:
+            if val.state_id == self.id:
+                my_cities.append(val)
+        return my_cities
