@@ -48,3 +48,23 @@ class test_console(unittest.TestCase):
 
         self.assertIn('1xef', printed_id)
         self.assertEqual('1xef', stored_state)
+        storage.delete()
+        storage.save()
+
+    def test_do_all(self):
+        """Tests all in the cmd """
+        state_1 = State(name="Carlifonia")
+        state_2 = State(name="New York")
+
+        state_1.save()
+        state_2.save()
+
+        output_dict = None
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('all State')
+            output_dict = f.getvalue().strip()
+        self.assertIn('Carlifonia', output_dict)
+        self.assertIn('New York', output_dict)
+        state_1.delete()
+        state_2.delete()
+        storage.save()
