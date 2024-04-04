@@ -44,7 +44,7 @@ sudo chown -R ubuntu:ubuntu /data/
 sudo tee /etc/nginx/sites-available/default >/dev/null <<EOF
 server {
         listen 80;
-        listen [::]:80 chigowdev.tech;
+        listen [::]:80 default_server;
         server_name _;
         add_header X-Served-By "${HOSTNAME}";
         location /redirect_me {
