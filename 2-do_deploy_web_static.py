@@ -12,6 +12,7 @@ from fabric.api import task
 
 env.hosts = ['100.25.24.173', '54.237.54.104']
 env.user = "ubuntu"
+env.private_key='/home/chigow/.ssh/school'
 
 
 @task
