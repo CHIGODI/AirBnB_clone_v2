@@ -1,3 +1,7 @@
+#!/usr/bin/python3
+"""
+This module creates a tgz file of the web_static directory
+"""
 from fabric.api import local
 from datetime import datetime
 import os
@@ -27,5 +31,8 @@ def do_pack():
 
         return archive_path
     except Exception as e:
-        print("Error:", e)
         return None
+
+
+if __name__ == '__main__':
+    do_pack()
