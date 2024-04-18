@@ -12,8 +12,6 @@ from fabric.api import task
 
 env.hosts = ['100.25.24.173', '54.237.54.104']
 env.user = "ubuntu"
-env.private_key='/home/chigow/.ssh/school'
-
 
 @task
 def do_pack():
@@ -41,40 +39,27 @@ def do_pack():
         return archive_path
     except Exception as e:
         return None
-
-
 @task
 def do_deploy(archive_path):
     """
     Distributes an archive to web servers
     """
     if os.path.exists(archive_path):
-
+        
         archive_filename = os.path.basename(archive_path)
         filename_without_extension = os.path.splitext(archive_filename)[0]
         # Individual connection
         try:
             for host in hosts:
-                with Connection(host=f"{host}", user=env.user,
-                                connect_kwargs={
-                                    "key_filename": "/home/chigow/.ssh/school",
-                                    }) as c:
-                    c.put(archive_path, remote='/tmp/')
-                    c.run(
-                        f'tar -xvzf /tmp/{archive_filename} '
-                        f'-C /data/web_static/releases/'
-                        f'{filename_without_extension}'
-                        )
+                with Connection(host=f"{host}", user=env.user, connect_kwargs={"key_filename": "/home/chigow/.ssh/school",}) as c:
+                    c.put(archive_path, '/tmp/')
+                    c.run(f'tar -xvzf /tmp/{archive_filename} -C /data/web_static/releases/{filename_without_extension}')
                     c.run(f'rm /tmp/{archive_filename}')
-                    c.run(f'ln -sf /data/web_static/current '
-                          f'/data/web_static/releases/'
-                          f'{filename_without_extension}'
-                          )
+                    c.run(f'ln -sf /data/web_static/current /data/web_static/releases/{filename_without_extension}')
             return True
         except Exception as e:
-            print(f'Something failed here!{e}')
-            return False
-
+           print(f'Something failed here!{e}')
+           return False
 
 if __name__ == '__main__':
     archive_path = do_pack()

@@ -8,18 +8,15 @@ from models.base_model import BaseModel
 from models.base_model import Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-
+from models.place import association_table
 
 class Amenity(BaseModel, Base):
     """
     This class describes the Amenity model, a child of BaseClass on
     which amenity objects are based
     """
-
     __tablename__ = 'amenities'
 
     name = Column(String(128), nullable=False)
-    """
     place_amenities = relationship("Place", backref="amenities",
-                                   secondary="place_amenity")
-    """
+                                   secondary=association_table)

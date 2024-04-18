@@ -5,6 +5,7 @@ from models.base_model import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Table, Column, String, ForeignKey, Integer, Float
 
+
 association_table = Table('place_amenity', Base.metadata,
                           Column('place_id', String(60),
                                  ForeignKey('places.id'),
@@ -13,7 +14,6 @@ association_table = Table('place_amenity', Base.metadata,
                                  ForeignKey('amenities.id'),
                                  primary_key=True, nullable=False)
                           )
-
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -31,8 +31,8 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
     reviews = relationship("Review", backref="place", cascade="all, delete")
-    p_amenities = relationship("Amenity",
-                               secondary=association_table,
+    amenities_ = relationship("Amenity",
+                               secondary='place_amenity',
                                viewonly=False)
 
     @property
@@ -41,7 +41,7 @@ class Place(BaseModel, Base):
         from models.review import Review
         my_reviews = []
         reviews_only = storage.all(Review)
-        for key, val in reviews_only.items():
+        for val in reviews_only.values():
             if val.place_id == self.id:
                 my_reviews.append(val)
         return my_reviews
