@@ -12,10 +12,12 @@ def hello():
     """ returns simple string """
     return f'Hello HBNB!'
 
+
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
     """ returns simple string """
     return f'HBNB'
+
 
 @app.route('/c/<text>', strict_slashes=False)
 def c(text):
@@ -27,4 +29,3 @@ def c(text):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-    
