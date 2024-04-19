@@ -51,7 +51,7 @@ class BaseModel:
 
     def save(self):
         """Updates updated_at with current time when instance is changed"""
-        from models import storage
+        from models.__init__ import storage
         self.updated_at = datetime.now()
         storage.new(self)
         storage.save()
@@ -74,6 +74,6 @@ class BaseModel:
         delete the current instance from the storage (models.storage)
         by calling the method delete
         """
-        from models import storage
+        from models.__init__ import storage
         storage.delete(self)
         storage.save()
