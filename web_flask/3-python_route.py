@@ -23,7 +23,7 @@ def hbnb():
 @app.route('/c/<text>', strict_slashes=False)
 def c(text):
     """ returns simple string """
-    if '_' in text:
+    if text and '_' in text:
         text = text.replace('_', ' ')
     return f'C {escape(text)}'
 
@@ -31,7 +31,9 @@ def c(text):
 @app.route('/python/<text>', strict_slashes=False)
 @app.route('/python', strict_slashes=False)
 def python(text='is cool'):
-    if '_' in text:
+    """
+    """
+    if text and '_' in text:
         text = text.replace('_', ' ')
     return f'Python {escape(text)}'
 

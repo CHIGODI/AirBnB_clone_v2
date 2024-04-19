@@ -4,6 +4,7 @@ from models.base_model import BaseModel
 from models.base_model import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy import Table, Column, String, ForeignKey, Integer, Float
+import os
 
 
 association_table = Table('place_amenity', Base.metadata,
@@ -31,34 +32,30 @@ class Place(BaseModel, Base):
     longitude = Column(Float, nullable=True)
     amenity_ids = []
     reviews = relationship("Review", backref="place", cascade="all, delete")
-    amenities_ = relationship("Amenity",
-                               secondary='place_amenity',
-                               viewonly=False)
+    amenities = relationship("Amenity", secondary="place_amenity",
+                             viewonly=False)
 
-    @property
-    def reviews(self):
-        from . import storage
-        from models.review import Review
-        my_reviews = []
-        reviews_only = storage.all(Review)
-        for val in reviews_only.values():
-            if val.place_id == self.id:
-                my_reviews.append(val)
-        return my_reviews
 
-    @property
-    def amenities(self):
-        from . import storage
-        from models.amenity import Amenity
-        my_amenities = []
-        amenities_only = storage.all(Amenity)
-        for a_id in Place.amenity_ids:
-            my_amenities.append(amenities_only[f"Amenity.{a_id}"])
-        return my_amenities
+    if os.getenv("HBNB_TYPE_STORAGE", None) != "db":
+        @property
+        def reviews(self):
+            """Get a list of all linked Reviews."""
+            review_list = []
+            for review in list(models.storage.all(Review).values()):
+                if review.place_id == self.id:
+                    review_list.append(review)
+            return review_list
 
-    @amenities.setter
-    def amenities(self, value):
-        from . import storage
-        from models.amenity import Amenity
-        if value in storage.all(Amenity).values():
-            Place.amenity_ids.append(value)
+        @property
+        def amenities(self):
+            """Get/set linked Amenities."""
+            amenity_list = []
+            for amenity in list(models.storage.all(Amenity).values()):
+                if amenity.id in self.amenity_ids:
+                    amenity_list.append(amenity)
+            return amenity_list
+
+        @amenities.setter
+        def amenities(self, value):
+            if type(value) == Amenity:
+                self.amenity_ids.append(value.id)

@@ -2,6 +2,7 @@
 """ State Module for HBNB project """
 from models.base_model import BaseModel
 from models.base_model import Base
+import os
 
 
 class State(BaseModel, Base):
@@ -14,13 +15,14 @@ class State(BaseModel, Base):
     cities = relationship("City", backref="state",
                           cascade="all, delete")
 
-    @property
-    def cities(self):
-        from . import storage
-        from models.city import City
-        my_cities = []
-        cities_only = storage.all(City)
-        for val in cities_only.values():
-            if val.state_id == self.id:
-                my_cities.append(val)
-        return my_cities
+    if os.getenv('HBNB_TYPE_STORAGE') != 'db':
+        @property
+        def cities(self):
+            from . import storage
+            from models.city import City
+            my_cities = []
+            cities_only = storage.all(City)
+            for val in cities_only.values():
+                if val.state_id == self.id:
+                    my_cities.append(val)
+            return my_cities
