@@ -19,8 +19,7 @@ def delete_session(exception=None):
 def states_list():
     """ renders a list states and its cities """
     states = storage.all(State).values()
-    sorted_states = sorted(states, key=lambda state: state.name)
-    return render_template('8-cities_by_states.html', states=sorted_states)
+    return render_template('8-cities_by_states.html', states=states)
 
 
 if __name__ == '__main__':
