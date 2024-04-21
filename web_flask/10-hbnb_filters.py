@@ -21,7 +21,8 @@ def states_list():
     """ renders a list states and its cities """
     states = storage.all(State)
     amenities = storage.all(Amenity)
-    return render_template('10-hbnb_filters.html', states=states, amenities=amenities)
+    return render_template('10-hbnb_filters.html',
+                           states=states, amenities=amenities)
 
 
 if __name__ == '__main__':

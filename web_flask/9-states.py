@@ -30,10 +30,10 @@ def states(id=''):
         states = storage.all(State)
         for state in states.values():
             if state.id == id:
-                return render_template('9-states.html', state=state, found=True)
+                return render_template('9-states.html',
+                                       state=state, found=True)
             else:
                 return render_template('9-states.html', found=False)
-
 
 
 if __name__ == '__main__':
