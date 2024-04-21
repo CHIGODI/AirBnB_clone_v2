@@ -72,6 +72,14 @@
 									<div class="description">{{ place.description | safe }}</div>
 								{% endif %}
 							{% endfor %}
+							<!-- <div class="amenities">
+								<h2 class="article_subtitle">Amenities</h2>
+								{% for amenity in place.amenities | sort(attribute='name') %}
+									<ul>
+										<li><div class="tv_icon"></div>{{ amenity.name }}</li>
+									</ul>
+								{% endfor %}
+							</div> -->
 					</article>
 				{% endfor %}
 			</section>
